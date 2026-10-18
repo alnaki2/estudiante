@@ -1,6 +1,0 @@
-PROJECT_NAME           = "Práctica. TDAs no lineales"
-OUTPUT_DIRECTORY       = /mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/doc_doxygen/
-INPUT                  = /mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/estudiante/include /mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/estudiante/src /mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/estudiante/doc
-GENERATE_LATEX         = NO
-IMAGE_PATH             = /mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/estudiante/doc
-EXTRACT_PRIVATE	       = NO

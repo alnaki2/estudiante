@@ -1,4 +1,0 @@
-/mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/CMakeFiles/usodiccionario.dir
-/mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/CMakeFiles/doc_doxygen.dir
-/mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/CMakeFiles/edit_cache.dir
-/mnt/c/Users/nacho/Downloads/ED/Practicas_ED_3/CMakeFiles/rebuild_cache.dir
