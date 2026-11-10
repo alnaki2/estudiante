@@ -1,32 +1,31 @@
+/**
+ * @file dictionary.cpp
+ * @brief Implementación del TDA Dictionary
+ */
 #include "dictionary.h"
 
 using namespace std;
 
-Dictionary::Dictionary() {
+Dictionary::Dictionary() {}
+
+Dictionary::Dictionary(const Dictionary &other) : words(other.words) {}
+
+Dictionary::~Dictionary() {
+    words.clear();
 }
 
-Dictionary::Dictionary(const Dictionary &other) : words(other.words) {
-}
-
-bool Dictionary::exists(const string &val) const {
-    return words.find(val) != words.end();
+Dictionary& Dictionary::operator=(const Dictionary &dic) {
+    if (this != &dic)
+        words = dic.words;
+    return *this;
 }
 
 bool Dictionary::insert(const string &val) {
-    pair<set<string>::iterator, bool> ret = words.insert(val);
-    return ret.second;
-}
-
-bool Dictionary::erase(const string &val) {
-    return words.erase(val) > 0;
+    return words.insert(val).second;
 }
 
 void Dictionary::clear() {
     words.clear();
-}
-
-bool Dictionary::empty() const {
-    return words.empty();
 }
 
 unsigned int Dictionary::size() const {
@@ -35,22 +34,39 @@ unsigned int Dictionary::size() const {
 
 vector<string> Dictionary::wordsOfLength(int length) const {
     vector<string> result;
-    for (set<string>::const_iterator it = words.begin(); it != words.end(); ++it) {
-        if (static_cast<int>(it->length()) == length) {
+    for (set<string>::const_iterator it = words.begin(); it != words.end(); ++it)
+        if (static_cast<int>(it->length()) == length)
             result.push_back(*it);
-        }
-    }
     return result;
 }
 
 int Dictionary::getOccurrences(const char c) const {
     int count = 0;
-    for (set<string>::const_iterator it = words.begin(); it != words.end(); ++it) {
-        for (char ch : *it) {
-            if (ch == c) {
+    for (set<string>::const_iterator it = words.begin(); it != words.end(); ++it)
+        for (size_t i = 0; i < it->size(); i++)
+            if ((*it)[i] == c)
                 count++;
-            }
-        }
-    }
     return count;
+}
+
+void Dictionary::anade(const Dictionary &dic) {
+    words.insert(dic.words.begin(), dic.words.end());
+}
+
+istream& operator>>(istream &is, Dictionary &dic) {
+    dic.clear();
+    string w;
+    while (getline(is, w)) {
+        if (!w.empty() && w[w.size()-1] == '\r')   // ficheros con fin de línea Windows
+            w.erase(w.size()-1);
+        if (!w.empty())
+            dic.insert(w);
+    }
+    return is;
+}
+
+ostream& operator<<(ostream &os, const Dictionary &dic) {
+    for (Dictionary::const_iterator it = dic.begin(); it != dic.end(); ++it)
+        os << *it << endl;
+    return os;
 }

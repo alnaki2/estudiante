@@ -1,9 +1,14 @@
+/**
+ * @file dictionary.h
+ * @brief Especificación del TDA Dictionary (implementado sobre set<string>)
+ */
 #ifndef __DICTIONARY_H__
 #define __DICTIONARY_H__
 
 #include <set>
 #include <string>
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <utility>
 
@@ -11,116 +16,104 @@ using namespace std;
 
 /**
  * @brief TDA Dictionary
- * @details Almacena las palabras de un fichero de texto y permite iterar sobre ellas
+ * @details Almacena un conjunto de palabras ordenadas alfabéticamente y sin
+ * repeticiones, y permite iterar sobre ellas.
  *
+ * @par Representación
+ * Se usa un set<string>. El invariante de la representación es que no hay
+ * palabras repetidas (garantizado por set) y están ordenadas.
  */
 class Dictionary{
 private:
-  set<string> words;
+  set<string> words; ///< Conjunto de palabras del diccionario
 public:
 
   /**
-   * @brief Constructor por defecto
-   *
-   * Crea un Dictionary vacío
+   * @brief Constructor por defecto. Crea un Dictionary vacío
    */
   Dictionary();
 
   /**
    * @brief Constructor de copia
-   *
-   * Crea un Dictionary con el mismo contenido que el que se pasa como argumento
-   *
    * @param other Dictionary que se quiere copiar
    */
   Dictionary(const Dictionary& other);
 
   /**
-   * @brief Destructor
-   *
-   * Limpia todos los elementos del Dictionary antes de borrarlo
+   * @brief Destructor. Limpia todos los elementos del Dictionary
    */
   ~Dictionary();
 
   /**
-   *  \brief Limpia el Dictionary
-   *
-   *  Elimina todas las palabras contenidas en el conjunto
+   * @brief Limpia el Dictionary. Elimina todas las palabras del conjunto
    */
   void clear();
 
   /**
    * @brief Tamaño del diccionario
-   *
    * @return Número de palabras guardadas en el diccionario
    */
-  unsigned int size()const;
+  unsigned int size() const;
 
   /**
-   * @brief Devuelve las palabras en el diccionario con una longitud dada
+   * @brief Devuelve las palabras del diccionario con una longitud dada
    * @param length Longitud de las palabras buscadas
-   * @return Vector de palabras con la longitud desdeada
+   * @return Vector de palabras con la longitud deseada
    */
-  vector<string> wordsOfLength(int length);
+  vector<string> wordsOfLength(int length) const;
 
   /**
-   * @brief Indica si una palabra esta en el diccionario o no.
-   *
-   * Este método comprueba si una determinada palabra se encuentra o no en el dicccionario
-   *
-   * @param palabra: la palabra que se quiere buscar.
-   * @return Booleano indicando si la palabra existe o no en el diccionario
+   * @brief Indica si una palabra está en el diccionario
+   * @param val Palabra que se quiere buscar
+   * @return true si la palabra existe, false en caso contrario
    */
-  bool exists(const string& val)const{return words.count(val) > 0;}
+  bool exists(const string& val) const {return words.count(val) > 0;}
 
   /**
-   * @brief Indica el numero de apariciones de una letra.
-   * @param c letra a buscar.
-   * @return Un entero indicando el numero de apariciones.
+   * @brief Número de apariciones de una letra en todo el diccionario
+   * @param c Letra a buscar
+   * @return Número de apariciones de c
    */
-  int getOccurrences(const char c);
+  int getOccurrences(const char c) const;
 
   /**
-   * @brief Añade al diccionario actual el que se pasa como argumento
-   * @param dic diccionario pasado como argumento.
+   * @brief Añade al diccionario actual las palabras de otro
+   * @param dic Diccionario cuyas palabras se añaden
    */
   void anade(const Dictionary &dic);
 
   /**
-   * @brief Comprueba si el diccionario está vacio.
-   * @return true si el diccionario está vacío, false en caso contrario
+   * @brief Comprueba si el diccionario está vacío
+   * @return true si está vacío, false en caso contrario
    */
-  bool empty()const{return words.empty();}
+  bool empty() const {return words.empty();}
 
   /**
    * @brief Elimina una palabra del diccionario
-   *
-   * @param val Palabra a borrar del diccionario
-   *
-   * @return Booleano que indica si la palabra se ha borrado del diccionario
+   * @param val Palabra a borrar
+   * @return true si la palabra se ha borrado, false si no estaba
    */
   bool erase(const string &val){return words.erase(val) > 0;}
 
   /**
    * @brief Inserta una palabra en el diccionario
-   *
-   * @param val palaba a insertar en el diccionario
-   * @return Booleano que indica si la inserción ha tenido éxito. Una palabra se inserta
-   * con éxito si no existía previamente en el diccionario
+   * @param val Palabra a insertar
+   * @return true si la inserción ha tenido éxito (la palabra no existía)
    */
   bool insert(const string &val);
 
-
   /**
    * @brief Sobrecarga del operador de asignación
+   * @param dic Diccionario a copiar
+   * @return Referencia al objeto implícito
    */
   Dictionary& operator=(const Dictionary &dic);
 
   /**
    * @brief Sobrecarga del operador de entrada
    *
-   * Permite leer las palabras de un fichero de texto e introducirlas en el
-   * diccionario
+   * Lee palabras de un flujo (una por línea) y las inserta en el diccionario.
+   * El contenido previo de dic se pierde.
    *
    * @param is Flujo de entrada
    * @param dic Diccionario a rellenar
@@ -131,14 +124,17 @@ public:
   /**
    * @brief Sobrecarga del operador de salida
    *
-   * Permite imprimir el diccionario completo a un flujo de salida
+   * Imprime todas las palabras del diccionario, una por línea.
    *
-   * @param os Flujo de salida, donde imprimir el diccionario
+   * @param os Flujo de salida
    * @param dic Diccionario a imprimir
-   * @return Flujo de salida, para poder encadenar el operador
+   * @return Flujo de salida para poder encadenar el operador
    */
   friend ostream& operator<<(ostream &os, const Dictionary &dic);
 
+  /**
+   * @brief Clase iterator para recorrer el diccionario
+   */
   class iterator{
   private:
     set<string>::iterator it;
@@ -149,18 +145,17 @@ public:
     ~iterator(){}
     iterator& operator=(const set<string>::iterator& otro){it=otro;return *this;}
     iterator& operator=(const iterator& otro){it=otro.it;return *this;}
-    string operator*()const{return *it;}
+    string operator*() const {return *it;}
     iterator& operator++(){++it;return *this;}
     iterator& operator--(){--it;return *this;}
-    iterator& operator++(int){it++;return *this;}
-    iterator& operator--(int){it--;return *this;}
-    bool operator!=(const iterator& otro){return it != otro.it;}
-    bool operator==(const iterator& otro){return it == otro.it;}
+    iterator operator++(int){iterator aux(*this);++it;return aux;}
+    iterator operator--(int){iterator aux(*this);--it;return aux;}
+    bool operator!=(const iterator& otro) const {return it != otro.it;}
+    bool operator==(const iterator& otro) const {return it == otro.it;}
   };
 
   /**
-   * @brief Class const_iterator
-   * @details Se hace para poder iterar sobre los elementos de tipo LettersSet que sean constantes
+   * @brief Clase const_iterator para recorrer diccionarios constantes
    */
   class const_iterator{
   private:
@@ -172,20 +167,23 @@ public:
     ~const_iterator(){}
     const_iterator& operator=(const set<string>::const_iterator& otro){const_it = otro;return *this;}
     const_iterator& operator=(const const_iterator& otro){const_it = otro.const_it;return *this;}
-    const string operator*()const{return *const_it;}
+    const string operator*() const {return *const_it;}
     const_iterator& operator++(){++const_it;return *this;}
     const_iterator& operator--(){--const_it;return *this;}
-    const_iterator& operator++(int){const_it++;return *this;}
-    const_iterator& operator--(int){const_it--;return *this;}
-    bool operator!=(const const_iterator& otro){return const_it != otro.const_it;}
-    bool operator==(const const_iterator& otro){return const_it == otro.const_it;}
+    const_iterator operator++(int){const_iterator aux(*this);++const_it;return aux;}
+    const_iterator operator--(int){const_iterator aux(*this);--const_it;return aux;}
+    bool operator!=(const const_iterator& otro) const {return const_it != otro.const_it;}
+    bool operator==(const const_iterator& otro) const {return const_it == otro.const_it;}
   };
 
+  /** @brief Iterador al primer elemento */
   iterator begin(){iterator i = words.begin();return i;}
+  /** @brief Iterador a la posición posterior al último elemento */
   iterator end(){iterator i = words.end();return i;}
-  const_iterator begin()const{const_iterator i = words.begin();return i;}
-  const_iterator end()const{const_iterator i = words.end();return i;}
-
+  /** @brief const_iterator al primer elemento */
+  const_iterator begin() const {const_iterator i = words.begin();return i;}
+  /** @brief const_iterator a la posición posterior al último elemento */
+  const_iterator end() const {const_iterator i = words.end();return i;}
 };
 
 #endif
