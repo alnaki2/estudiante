@@ -45,10 +45,36 @@ class Guia_Tlf{
   *
   */
 private:
-	map<string,string> datos; //si admites que haya nombres repetidos tendrías que usar un
-					     //multimap
+	map<string,string> datos; //si admites que haya nombres repetidos tendrías que usar un multimap
 
 public:
+
+ /**
+ * @brief Constructor por defecto
+ * 
+ */
+Guia_Tlf();
+
+/**
+ * @brief Constructor de copia de Guia_Tlf
+ * 
+ * @param gt guia telefonica a copiar
+ */
+Guia_Tlf(const Guia_Tlf & gt);
+
+/**
+ * @brief Destructor de Guia_Tlf 
+ * 
+ */
+~Guia_Tlf();
+
+/**
+ * @brief operador de asignacion
+ * 
+ * @param gt guia telefonica a asignar
+ * @return Guia_Tlf 
+ */
+Guia_Tlf operator=(const Guia_Tlf & gt);
 
   /**
   @brief Acceso a un elemento
