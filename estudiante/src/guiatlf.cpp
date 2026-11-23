@@ -63,7 +63,7 @@ Guia_Tlf inter(const Guia_Tlf & g){
     Guia_Tlf res;
     for (auto it = datos.begin() ; it != datos.end() ; ++it){
         auto jt = g.datos.find(it->first);
-        if (jt != g.datos.end() && jt->second == it->second) // para coincidencia de nombre y telefono
+        if (jt != g.datos.end()) // para coincidencia de nombre y telefono
             res.datos.insert(*it);
     }
     return res;
