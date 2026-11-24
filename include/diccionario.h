@@ -43,7 +43,7 @@ private:
     list<data<T, U> > datos;
 
     /* Copia el diccionario de entrada en el objeto implicito*/
-    void Copiar(const Diccionario<T, U>& D):
+    void Copiar(const Diccionario<T, U>& D);
 
     /* Borra todos los datos que contiene el diccionario*/
     void Borrar();
@@ -62,51 +62,80 @@ public:
 
     /**
      * Destructor
-     */
+    */
     ~Diccionario();
-
+    
     /**
      *Operador de asignación
-     */
+    */
     Diccionario<T, U> & operator=(const Diccionario<T, U> &D);
-
-    class iterator{
-        
-        private:
-            typename list<data<T,U> >::iterator it;
-        public:
-            iterator();
-            iterator & operator++(){
-                ++it;
-                return *this;
-            }
-            iterator operator++(int a){
-                iterator aux = *this;
-                ++it;
-                return aux;
-
-            }
-            iterator & operator--(){
-                --it;
-                return *this;
-            }
-            iterator operator--(int){
-                iterator aux = *this;
-                --it;
-                return aux;
-            }
-            data<T,U> & operator*();
-            bool operator==(const iterator &i) const{
-                return it == i.it;
-            }
-            bool operator!=(const iterator &i) const{
-                return it != i.it;
-            }
-
+    class iterator {
+    private:
+        typename list<data<T, U>>::iterator it;
+        friend class Diccionario<T, U>;
+    public:
+        iterator() {
+        }
+        iterator(typename list<data<T, U>>::iterator otro) : it(otro) {
+        }
+        iterator &operator++() {
+            ++it;
+            return *this;
+        }
+        iterator operator++(int) {
+            iterator aux(*this);
+            ++it;
+            return aux;
+        }
+        iterator &operator--() {
+            --it;
+            return *this;
+        }
+        iterator operator--(int) {
+            iterator aux(*this);
+            --it;
+            return aux;
+        }
+        data<T, U> &operator*() {
+            return *it;
+        }
+        bool operator==(const iterator &otro) const {
+            return it == otro.it;
+        }
+        bool operator!=(const iterator &otro) const {
+            return it != otro.it;
+        }
     };
-    class const_iterator{
-        //Completar el const_iterator
+    class const_iterator {
+    private:
+        typename list<data<T, U>>::const_iterator it;
+    public:
+        const_iterator() {
+        }
+        const_iterator(typename list<data<T, U>>::const_iterator otro) : it(otro) {
+        }
+        const_iterator &operator++() {
+            ++it;
+            return *this;
+        }
 
+        const_iterator operator++(int) {
+            const_iterator aux(*this);
+            ++it;
+            return aux;
+        }
+
+        const data<T, U> &operator*() const {
+            return *it;
+        }
+
+        bool operator==(const const_iterator &otro) const {
+            return it == otro.it;
+        }
+
+        bool operator!=(const const_iterator &otro) const {
+            return it != otro.it;
+        }
     };
 
     /**
@@ -214,9 +243,38 @@ public:
        return it;
     }
 
+
+    /**
+    iterator begin() {
+        return iterator(datos.begin());
+    }
+
+    iterator end() {
+        return iterator(datos.end());
+    }
+
+    const_iterator begin() const {
+        return const_iterator(datos.begin());
+    }
+
+    const_iterator end() const {
+        return const_iterator(datos.end());
+    }
+
+    const_iterator cbegin() const {
+        return const_iterator(datos.begin());
+    }
+
+    const_iterator cend() const {
+        return const_iterator(datos.end());
+    }
+    * 
+     */
 };
 
 template <class T, class U>
 Diccionario<T,U>::iterator::iterator(const Diccionario<T,U> &D):datos(D.datos){}
+
+#include "diccionario.cpp"
 
 #endif
