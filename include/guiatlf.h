@@ -210,21 +210,55 @@ Guia_Tlf filtro(const string & c);
  * @brief clase para iterar sobre la guia
  */
 class iterator{
-   private:
+  private:
     map<string, string>::iterator it;
-   public:
-   /**
-    * @brief Inicializa un iterator al comienzo de la guia
-    */
-   iterator  begin();
-   
-   /**
-    * @brief Inicializa un iterator al final de la guia
-    */
-   iterator  end();
-};
 
+  public:
+    /**
+     * @brief Constructor por defecto
+     * 
+     */
+    iterator(){
+    }
 
+    /**
+     * @brief Constructor a partir de un
+     * 
+     * @param i 
+     */
+    iterator(map<string, string>::iterator i){
+      it = i;
+    }
+
+    pair<const string, string> &operator*(){
+      return *it;
+    }
+
+    iterator &operator++(){
+      ++it;
+      return *this;
+    }
+
+    iterator operator++(int){
+      iterator aux(*this);
+      ++it;
+      return aux;
+    }
+
+    bool operator==(const iterator &otro) const{
+      return it == otro.it;
+    }
+
+    bool operator!=(const iterator &otro) const{
+      return it != otro.it;
+    }
+
+  }; //termina class iterator
+  
+  
+  iterator begin();
+
+  iterator end();
 
 
 

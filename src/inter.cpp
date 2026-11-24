@@ -1,11 +1,29 @@
 #include <iostream>
+#include <fstream>
+#include "guiatlf.h"
+
 using namespace std;
 
 int main(int argc, char* argv[]){
-    file fic_g1 = argv[1];
-    file fic_g2 = argv[2];
+    if (argc != 3) {
+        cerr << "Uso: ./inter fichero_guia_1 fichero_guia_2" << endl;
+        return 1;
+    }
 
-    file inter_g12 = fic_g1.inter(fic_g2);
+    ifstream f1(argv[1]);
+    ifstream f2(argv[2]);
+    if (!f1 || !f2) {
+        cerr << "No se puede abrir uno de los ficheros indicados" << endl;
+        return 1;
+    }
 
-    //mostrar inter_g12
+    Guia_Tlf g1;
+    Guia_Tlf g2;
+    f1 >> g1;
+    f2 >> g2;
+
+    Guia_Tlf resultado = g1.inter(g2);
+    cout << resultado;
+
+    return 0;
 }

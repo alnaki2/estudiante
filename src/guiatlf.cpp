@@ -155,6 +155,10 @@ Guia_Tlf Guia_Tlf::filtro(const string & prefijo){
 
 
 
-Guia_Tlf::iterator  Guia_Tlf::begin(){}
+Guia_Tlf::iterator  Guia_Tlf::begin(){
+    return iterator(datos.begin());
+}
 
-iterator  end(){}
+Guia_Tlf::iterator  Guia_Tlf::end(){
+    return iterator(datos.begin());
+}
