@@ -29,14 +29,14 @@ Guia_Tlf Guia_Tlf::operator+(const Guia_Tlf &g){
 
 Guia_Tlf Guia_Tlf::operator-(const Guia_Tlf &g){
     Guia_Tlf resultado;
-    for(auto it = g.datos.begin() ; it != g.datos.end() ;++it){
+    for(auto it = datos.begin() ; it != datos.end() ;++it){
         auto encontrado = g.datos.find(it->first);
         
         if(encontrado == g.datos.end()){
             resultado.datos.insert(*it);
         }
     }
-    resultado;
+    return resultado;
 }
 
 ostream &operator<<(ostream & os, Guia_Tlf & g){
@@ -99,18 +99,6 @@ void Guia_Tlf::borrar(const string &nombre,const string &tlf){
     }
 }
 
-int Guia_Tlf::size()const{
-    return datos.size();
-}
-
-unsigned int Guia_Tlf::contabiliza(const string &nombre){
-    return datos.count(nombre);
-}
-
-void Guia_Tlf::clear(){
-    datos.clear();
-}
-
 Guia_Tlf Guia_Tlf::previos(const string &nombre,const string &tlf){
     Guia_Tlf resultado;
 
@@ -160,5 +148,5 @@ Guia_Tlf::iterator  Guia_Tlf::begin(){
 }
 
 Guia_Tlf::iterator  Guia_Tlf::end(){
-    return iterator(datos.begin());
+    return iterator(datos.end());
 }

@@ -237,7 +237,6 @@ public:
     const_iterator cend() const {
         return const_iterator(datos.end());
     }
-    * 
 };
 #include "../src/diccionario.cpp"
 

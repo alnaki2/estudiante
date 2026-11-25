@@ -34,7 +34,7 @@ Diccionario<T, U> &Diccionario<T, U>::operator=(const Diccionario<T, U> &D){
 
 template <class T, class U>
 bool Diccionario<T, U>::Esta_Clave(const T &p, typename Diccionario<T, U>::iterator &it_out){
-    typename list<data<T.U>::iterator it = datos.begin();
+    typename list<::data<T,U>::iterator it = datos.begin();
     while (it != datos.end() && it->clave < p){
         ++it;
     }
@@ -48,11 +48,11 @@ template <class T, class U>
 void Diccionario<T, U>::Insertar(const T &clave, const list<U> &info){
     iterator it;
     if(!Esta_Clave(clave, it)){
-        data<T,U> nuevo;
+        ::data<T,U> nuevo;
         nuevo.clave = clave;
         nuevo.info_asoci = info;
 
-        datos.insert(it.it, nuevo)
+        datos.insert(it.it, nuevo);
     }
 }
 
@@ -101,13 +101,13 @@ template <class T, class U>
 Diccionario<T, U> Diccionario<T, U>::union_d(const Diccionario<T, U> &D){
     Diccionario<T,U> resultado(*this); //creamos un diccionario a partir del actual
 
-    for ( typename list<data<T,U>>::const_iterator it = D.datos.begin() ; it != D.datos.end() ; ++it){ // recorremos el dado para la union
+    for ( typename list<::data<T,U>>::const_iterator it = D.datos.begin() ; it != D.datos.end() ; ++it){ // recorremos el dado para la union
         iterator encontrado;
 
         if (!resultado.Esta_Clave(it->clave, encontrado)){  // si en el resultado no esta el apuntado en D
             resultado.Insertar(it->clave, it->info_asoci);  // se añade
         } else {                                            // si en el resultado esta el apuntado en D
-            for (typename list<U>::const_iterator significado = it.info_asoci.begin() ; significado != it->info_asoci.end() ; ++significado){ //recorremos la info asociada del elemento actual 
+            for (typename list<U>::const_iterator significado = it->info_asoci.begin() ; significado != it->info_asoci.end() ; ++significado){ //recorremos la info asociada del elemento actual 
                 bool repetido = false;
 
                 for (typename list<U>::const_iterator actual = (*encontrado).info_asoci.begin() ; actual != (*encontrado).info_asoci.end(); ++actual){
@@ -126,47 +126,55 @@ Diccionario<T, U> Diccionario<T, U>::union_d(const Diccionario<T, U> &D){
 
 template <class T, class U>
 Diccionario<T, U> Diccionario<T, U>::diferencia(const Diccionario<T, U> &D){
-    Diccionario <T,U> resultado;
+    Diccionario<T, U> resultado;
 
-    for(typename list<data<T,U>::const_iterator it = datos.begin() ; it != datos.end(); ++it;){
-        iterator encontrado;
+    for (auto it = datos.begin(); it != datos.end(); ++it) {
+        bool encontrada = false;
 
-        if(!D.Esta_Clave(it->clave, encontrado)){
+        for (auto jt = D.datos.begin(); jt != D.datos.end(); ++jt) {
+            if (jt->clave == it->clave) {
+                encontrada = true;
+                break;
+            }
+        }
+
+        if (!encontrada) {
             resultado.Insertar(it->clave, it->info_asoci);
         }
     }
+
+    return resultado;
 }
 
 template <class T, class U>
 Diccionario<T, U> Diccionario<T, U>::interseccion(const Diccionario<T, U> &D){
-    Diccionario<T,U> resultado;
+      Diccionario<T, U> resultado;
 
-    for(typename list<Data<T,U>>::const_iterator it = datos.begin() ; it != datos.end ; ++it){
-        iterator encontrado;
-        if(D.Esta_Clave(it->clave, encontrado)){
+    for (auto it = datos.begin(); it != datos.end(); ++it) {
+        bool encontrada = false;
+
+        for (auto jt = D.datos.begin(); jt != D.datos.end(); ++jt) {
+            if (jt->clave == it->clave) {
+                encontrada = true;
+                break;
+            }
+        }
+
+        if (encontrada) {
             resultado.Insertar(it->clave, it->info_asoci);
         }
     }
-    return resultado;
+
+    return resultado;   
 }
 
 template <class T, class U>
 Diccionario<T, U> Diccionario<T, U>::Devolver_rango(const T &i, const T &f){
     Diccionario<T,U> resultado;
-    for(typename list<data<T,U>>::const_iterator it = datos.begin() ; it != datos.end() ; ++it){
+    for(typename list<::data<T,U>>::const_iterator it = datos.begin() ; it != datos.end() ; ++it){
         if(!(it->clave < i) && it->clave < f){
             resultado.Insertar(it->clave, it->info_asoci);
         }
     }
     return resultado;
-}
-
-template <class T, class U>
-Diccionario<T, U>::iterator::iterator(){
-}
-
-template <class T, class U>
-::data<T, U> &
-Diccionario<T, U>::iterator::operator*(){
-    return *it;
 }
