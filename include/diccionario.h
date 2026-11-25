@@ -28,7 +28,7 @@ struct data {
 un funtor.
  */
 template <class T, class U>
-bool operator<(const data<T, U> &d1, const data <T, U>&d2) {
+bool operator<(const ::data<T, U> &d1, const ::data <T, U>&d2) {
     if (d1.clave < d2.clave)
         return true;
     return false;
@@ -40,7 +40,7 @@ template <class T, class U>
 class Diccionario {
 private:
 
-    list<data<T, U> > datos;
+    list<::data<T, U> > datos;
 
     /* Copia el diccionario de entrada en el objeto implicito*/
     void Copiar(const Diccionario<T, U>& D);
@@ -64,19 +64,19 @@ public:
      * Destructor
     */
     ~Diccionario();
-    
+
     /**
      *Operador de asignación
     */
     Diccionario<T, U> & operator=(const Diccionario<T, U> &D);
     class iterator {
     private:
-        typename list<data<T, U>>::iterator it;
+        typename list<::data<T, U>>::iterator it;
         friend class Diccionario<T, U>;
     public:
         iterator() {
         }
-        iterator(typename list<data<T, U>>::iterator otro) : it(otro) {
+        iterator(typename list<::data<T, U>>::iterator otro) : it(otro) {
         }
         iterator &operator++() {
             ++it;
@@ -96,7 +96,7 @@ public:
             --it;
             return aux;
         }
-        data<T, U> &operator*() {
+        ::data<T, U> &operator*() {
             return *it;
         }
         bool operator==(const iterator &otro) const {
@@ -108,11 +108,11 @@ public:
     };
     class const_iterator {
     private:
-        typename list<data<T, U>>::const_iterator it;
+        typename list<::data<T, U>>::const_iterator it;
     public:
         const_iterator() {
         }
-        const_iterator(typename list<data<T, U>>::const_iterator otro) : it(otro) {
+        const_iterator(typename list<::data<T, U>>::const_iterator otro) : it(otro) {
         }
         const_iterator &operator++() {
             ++it;
@@ -125,7 +125,7 @@ public:
             return aux;
         }
 
-        const data<T, U> &operator*() const {
+        const ::data<T, U> &operator*() const {
             return *it;
         }
 
@@ -178,7 +178,7 @@ public:
 
 
     /**
-     borra un data del diccionario por su clave
+     borra un ::data del diccionario por su clave
      c es la clave cuyo elemento queremos borrar. Devuelve
      true si se ha borrado el elemento, false si no
      */
@@ -214,37 +214,6 @@ public:
 
 
     /** Funciones begin y end para los iteradores**/
-
-    iterator begin(){
-      
-       iterator it;
-       it = datos.begin();
-       return it;
-
-    }
-
-    iterator end(){
-        
-       iterator it;
-       it = datos.end();
-       return it;
-    }
-
-    const_iterator begin () const{
-       const_iterator it;
-       it = datos.begin();
-       return it;   
-      
-    }
-
-    const_iterator end() const{
-       const_iterator it;
-       it = datos.end();
-       return it;
-    }
-
-
-    /**
     iterator begin() {
         return iterator(datos.begin());
     }
@@ -269,12 +238,7 @@ public:
         return const_iterator(datos.end());
     }
     * 
-     */
 };
-
-template <class T, class U>
-Diccionario<T,U>::iterator::iterator(const Diccionario<T,U> &D):datos(D.datos){}
-
-#include "diccionario.cpp"
+#include "../src/diccionario.cpp"
 
 #endif
