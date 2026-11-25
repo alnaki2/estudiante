@@ -31,33 +31,28 @@ ostream & operator<<(ostream & os, const Diccionario<string,string> & D){
      y en cada linea obviamente la informacion asociada
 */
 
-istream & operator >>(istream & is,Diccionario<string,string> &D){
-      Diccionario<string,string>::iterator useless;
-	  int np;
-	  is>>np;
-	  is.ignore();//quitamos \n
-	  Diccionario<string,string> Daux;
-	  for (int i=0;i<np; i++){
-		    string clave;
+istream & operator >>(istream & is, Diccionario<string,string> &D){
+    int np;
+    is >> np;
+    is.ignore();
+    Diccionario<string,string> Daux;
+    for (int i = 0; i < np; i++){
+        string clave;
+        getline(is, clave);
 
-		    getline(is,clave);
-
-		    int ns;
-		    is>>ns;
-		    is.ignore();//quitamos \n
-		    list<string>laux;
-		    for (int j=0;j<ns; j++){
-			      string s;
-			      getline(is,s);
-
-			      // cout<<"Significado leido "<<s<<endl;
-			      laux.insert(laux.end(),s);
-		    }
-		    Daux.Insertar(clave,laux,useless);
-
-	  }
-	  D=Daux;
-	  return is;
+        int ns;
+        is >> ns;
+        is.ignore();
+        list<string> laux;
+        for (int j = 0; j < ns; j++){
+            string s;
+            getline(is, s);
+            laux.insert(laux.end(), s);
+        }
+        Daux.Insertar(clave, laux);
+    }
+    D = Daux;
+    return is;
 }
 
 /*Recorre la lista de información asociada a una clave y la imprime*/

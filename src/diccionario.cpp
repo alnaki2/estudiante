@@ -34,7 +34,7 @@ Diccionario<T, U> &Diccionario<T, U>::operator=(const Diccionario<T, U> &D){
 
 template <class T, class U>
 bool Diccionario<T, U>::Esta_Clave(const T &p, typename Diccionario<T, U>::iterator &it_out){
-    typename list<::data<T,U>::iterator it = datos.begin();
+    typename list<::data<T,U> >::iterator it = datos.begin();
     while (it != datos.end() && it->clave < p){
         ++it;
     }
