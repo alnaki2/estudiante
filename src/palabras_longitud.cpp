@@ -1,7 +1,7 @@
 /**
  * @file palabras_longitud.cpp
  * @brief Imprime las palabras de un diccionario con una longitud dada.
- * Uso: ./palabras_longitud fichero_diccionario longitud
+ * Uso: ./palabras_longitud data/fichero_diccionario longitud
  */
 #include <iostream>
 #include <fstream>
